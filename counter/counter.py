@@ -21,7 +21,8 @@ def counter(string) -> int:
 
 
 archive = {}
-
+'''
 while True:
     user_input = input("Input string: > ")
     exit() if user_input == '' else print(get_count(user_input))
+'''
