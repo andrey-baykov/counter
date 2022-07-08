@@ -16,13 +16,20 @@ def main(arguments):
 
 
 def get_string_from_file(path):
-    with open(path, "r") as f:
-        return counter(f.read())
+    try:
+        with open(path, "r") as f:
+            return counter(f.read())
+    except OSError:
+        return None
+
+
+def create_parser():
+    parsed = argparse.ArgumentParser()
+    parsed.add_argument("--string")
+    parsed.add_argument("--file")
+    return parsed
 
 
 if __name__ == "__main__":
-    argparse = argparse.ArgumentParser()
-    argparse.add_argument("--string")
-    argparse.add_argument("--file")
-    args = argparse.parse_args()
-    print(main(args))
+    args = create_parser()
+    print(main(args.parse_args()))
