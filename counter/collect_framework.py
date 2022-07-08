@@ -19,8 +19,8 @@ def get_string_from_file(path):
     try:
         with open(path, "r") as f:
             return counter(f.read())
-    except OSError:
-        return None
+    except (PermissionError, FileExistsError, FileNotFoundError):
+        return "File cannot be read"
 
 
 def create_parser():

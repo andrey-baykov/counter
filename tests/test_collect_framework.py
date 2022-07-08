@@ -1,8 +1,6 @@
 import argparse
 from unittest import mock
-
 import pytest
-
 from counter import collect_framework
 
 params = [("aaa", 0),
@@ -24,6 +22,11 @@ parser_params = [(None, None),
                  (None, 'world'),
                  ('Hello', 'world')]
 
+input_params = [(None, None, 0),
+                ('Hello', None, 3),
+                (None, '../test_1.txt', 5),
+                ('Hello', '../test_2.txt', 7)]
+
 
 @pytest.mark.parametrize("test_input, expected", params)
 def test_counter(test_input, expected):
@@ -37,25 +40,9 @@ def test_read_from_command_line(string, file):
     assert parsed.string == string and parsed.file == file
 
 
-@mock.patch('counter.collect_framework.get_string_from_file', return_value=7)
-def test_main_full(mock_data):
-    args = argparse.Namespace(string="hello", file=mock_data)
-    assert collect_framework.main(args) == 7
-
-
-@mock.patch('counter.collect_framework.get_string_from_file', return_value=5)
-def test_main_string(mock_data):
-    args = argparse.Namespace(string="hello", file=None)
-    assert collect_framework.main(args) == 3
-
-
-@mock.patch('counter.collect_framework.get_string_from_file', return_value=5)
-def test_main_file(mock_data):
-    args = argparse.Namespace(string=None, file=mock_data)
-    assert collect_framework.main(args) == 5
-
-
-@mock.patch('counter.collect_framework.get_string_from_file', return_value=3)
-def test_main_none(mock_data):
-    args = argparse.Namespace(string=None, file=None)
-    assert collect_framework.main(args) == 0
+@pytest.mark.parametrize("string, file_path, expected", input_params)
+def test_main_all(string, file_path, expected):
+    with mock.patch('counter.collect_framework.get_string_from_file') as mock_data:
+        mock_data.return_value = expected
+        args = argparse.Namespace(string=string, file=file_path)
+        assert collect_framework.main(args) == expected
