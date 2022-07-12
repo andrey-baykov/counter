@@ -9,18 +9,23 @@ def counter(string) -> int:
     return sum([letters[char] for char in letters if letters[char] == 1])
 
 
-def main(arguments):
+def main(*args):
+    if len(args) > 0 and type(args[0]) == argparse.Namespace:
+        arguments = args[0]
+    else:
+        arguments = create_parser().parse_args()
+
     if arguments.file:
-        return get_string_from_file(arguments.file)
+        try:
+            return get_string_from_file(arguments.file)
+        except (PermissionError, FileExistsError, FileNotFoundError):
+            return "File cannot be read"
     return counter(arguments.string)
 
 
 def get_string_from_file(path):
-    try:
-        with open(path, "r") as f:
-            return counter(f.read())
-    except (PermissionError, FileExistsError, FileNotFoundError):
-        return "File cannot be read"
+    with open(path, "r") as f:
+        return counter(f.read())
 
 
 def create_parser():
@@ -31,5 +36,4 @@ def create_parser():
 
 
 if __name__ == "__main__":
-    args = create_parser()
-    print(main(args.parse_args()))
+    print(main())
