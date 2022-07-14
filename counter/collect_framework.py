@@ -26,11 +26,14 @@ def get_string_from_file(path):
         return counter(f.read())
 
 
-def create_parser():
+def create_parser(*args):
     parsed = argparse.ArgumentParser()
     parsed.add_argument("--string")
     parsed.add_argument("--file")
-    output = parsed.parse_args()
+    if len(args) == 2:
+        output = parsed.parse_args(['--string', args[0], '--file', args[1]])
+    else:
+        output = parsed.parse_args()
     return output
 
 
