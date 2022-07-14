@@ -18,11 +18,6 @@ params = [("aaa", 0),
           ("asd  f", 4)
           ]
 
-parser_params = [(None, None),
-                 ("Hello", None),
-                 (None, 'test.txt'),
-                 ("Hello", 'test.txt')
-                 ]
 
 input_params = [(None, None, 0),
                 ('Hello', None, 3),
@@ -35,10 +30,9 @@ def test_counter(test_input, expected):
     assert collect_framework.counter(test_input) == expected
 
 
-@pytest.mark.parametrize('test_input, file_path', parser_params)
-def test_read_from_command_line(test_input, file_path):
-    parser = collect_framework.create_parser(test_input, file_path)
-    assert parser.string == test_input and parser.file == file_path
+def test_read_from_command_line():
+    parser = collect_framework.create_parser('--string hello --file check.txt'.split())
+    assert parser.string == 'hello' and parser.file == 'check.txt'
 
 
 @pytest.mark.parametrize("string, file_data, expected", input_params)
