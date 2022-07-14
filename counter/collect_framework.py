@@ -9,13 +9,13 @@ def counter(string) -> int:
     return sum([letters[char] for char in letters if letters[char] == 1])
 
 
-def main():
+def pipeline():
     arguments = create_parser()
     if arguments.file:
         try:
             output = get_string_from_file(arguments.file)
-        except (PermissionError, FileExistsError, FileNotFoundError):
-            output = "File cannot be read"
+        except Exception as e:
+            raise
     else:
         output = counter(arguments.string)
     return output
@@ -37,5 +37,12 @@ def create_parser(*args):
     return output
 
 
+def main():
+    try:
+        print(pipeline())
+    except (PermissionError, FileExistsError, FileNotFoundError):
+        print("File cannot be read")
+
+
 if __name__ == "__main__":
-    print(main())
+    main()

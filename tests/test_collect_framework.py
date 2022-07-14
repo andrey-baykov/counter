@@ -47,4 +47,4 @@ def test_main_all(string, file_data, expected):
         with mock.patch('counter.collect_framework.get_string_from_file') as mock_data:
             mock_data.return_value = expected
             mock_parser.return_value = argparse.Namespace(string=string, file=file_data)
-            assert collect_framework.main() == expected
+            assert collect_framework.pipeline() == expected
