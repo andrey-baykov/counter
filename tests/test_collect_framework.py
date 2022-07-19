@@ -1,8 +1,7 @@
 import argparse
 from unittest import mock
 import pytest
-from counter import collect_framework
-
+from src.counter import collect_framework
 
 params = [("aaa", 0),
           ("abb", 1),
@@ -37,8 +36,8 @@ def test_read_from_command_line():
 
 @pytest.mark.parametrize("string, file_data, expected", input_params)
 def test_main_all(string, file_data, expected):
-    with mock.patch('counter.collect_framework.create_parser') as mock_parser:
-        with mock.patch('counter.collect_framework.get_string_from_file') as mock_data:
+    with mock.patch('src.counter.collect_framework.create_parser') as mock_parser:
+        with mock.patch('src.counter.collect_framework.get_string_from_file') as mock_data:
             mock_data.return_value = expected
             mock_parser.return_value = argparse.Namespace(string=string, file=file_data)
             assert collect_framework.pipeline() == expected
